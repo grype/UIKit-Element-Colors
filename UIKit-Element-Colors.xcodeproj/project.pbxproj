@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C432A152242ABB1400B8A343 /* ColorsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C432A151242ABB1400B8A343 /* ColorsTableViewCell.swift */; };
 		C433B32F24296E9C003BDA27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433B32E24296E9C003BDA27 /* AppDelegate.swift */; };
 		C433B33124296E9C003BDA27 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433B33024296E9C003BDA27 /* SceneDelegate.swift */; };
 		C433B33624296E9C003BDA27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C433B33424296E9C003BDA27 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C432A151242ABB1400B8A343 /* ColorsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsTableViewCell.swift; sourceTree = "<group>"; };
 		C433B32B24296E9C003BDA27 /* UIKit-Element-Colors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UIKit-Element-Colors.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C433B32E24296E9C003BDA27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C433B33024296E9C003BDA27 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				C4B481FA242992270076FB8E /* ColorElement.swift */,
 				C4B481FC242992420076FB8E /* ColorComponents.swift */,
 				C4B481FE2429925D0076FB8E /* CheckeredView.swift */,
+				C432A151242ABB1400B8A343 /* ColorsTableViewCell.swift */,
 			);
 			path = "UIKit-Element-Colors";
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			files = (
 				C433B32F24296E9C003BDA27 /* AppDelegate.swift in Sources */,
 				C4B481FB242992270076FB8E /* ColorElement.swift in Sources */,
+				C432A152242ABB1400B8A343 /* ColorsTableViewCell.swift in Sources */,
 				C433B33124296E9C003BDA27 /* SceneDelegate.swift in Sources */,
 				C4B481FF2429925D0076FB8E /* CheckeredView.swift in Sources */,
 				C4B481FD242992420076FB8E /* ColorComponents.swift in Sources */,

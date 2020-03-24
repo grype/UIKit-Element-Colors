@@ -17,12 +17,10 @@ struct ColorComponents {
     var brightness: CGFloat
     var alpha: CGFloat
     
+    // MARK: - Instance Creation
+    
     static var empty: ColorComponents {
         return ColorComponents(red: 0, green: 0, blue: 0, hue: 0, saturation: 0, brightness: 0, alpha: 0)
-    }
-    
-    private func roundNumber(_ aNumber: CGFloat) -> CGFloat {
-        return CGFloat ((aNumber * 100).rounded(.down)) / CGFloat(100)
     }
     
     static func from(_ aColor: UIColor) -> Self {
@@ -31,6 +29,8 @@ struct ColorComponents {
         aColor.getHue(&components.hue, saturation: &components.saturation, brightness: &components.brightness, alpha: &components.alpha)
         return components
     }
+    
+    // MARK: - Converting
     
     var contrastingColor: UIColor {
         guard brightness > 0.5 else {
@@ -43,11 +43,27 @@ struct ColorComponents {
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
     
+    // MARK: - Describing
+    
     var rgbDescription: String {
         return "R:\(roundNumber(red)) G:\(roundNumber(green)) B:\(roundNumber(blue)) A:\(roundNumber(alpha))"
     }
     
     var hsbDescription: String {
         return "H:\(roundNumber(hue)) S:\(roundNumber(saturation)) B:\(roundNumber(brightness)) A:\(roundNumber(alpha))"
+    }
+    
+    var rgbCode: String {
+        return "UIColor(red: \(red), green: \(green), blue: \(blue), alpha: \(alpha))"
+    }
+    
+    var hsbCode: String {
+        return "UIColor(hue: \(hue), saturation: \(saturation), brightness: \(brightness), alpha: \(alpha))"
+    }
+    
+    // MARK: - Utitlies
+    
+    private func roundNumber(_ aNumber: CGFloat) -> CGFloat {
+        return CGFloat ((aNumber * 100).rounded(.down)) / CGFloat(100)
     }
 }

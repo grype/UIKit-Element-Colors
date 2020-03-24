@@ -15,7 +15,7 @@ enum ColorElement {
     case separator(String, UIColor)
     case text(String, UIColor)
     
-    var name: String {
+    var displayName: String {
         switch self {
         case .label(_, _):
             return "𝑻  labels"
@@ -27,6 +27,21 @@ enum ColorElement {
             return "▧  backgrounds"
         case .separator(_, _):
             return "▧  separators"
+        }
+    }
+    
+    var color: UIColor {
+        switch self {
+        case .label(_, let aColor):
+            fallthrough
+        case .text(_, let aColor):
+            fallthrough
+        case .fill(_, let aColor):
+            fallthrough
+        case .background(_, let aColor):
+            fallthrough
+        case .separator(_, let aColor):
+            return aColor
         }
     }
 }

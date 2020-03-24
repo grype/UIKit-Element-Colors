@@ -8,60 +8,36 @@
 
 import UIKit
 
-class ColorsTableViewCell: UITableViewCell {
+class ColorsTableViewController: UITableViewController {
     
-    private(set) var colorIndicator = UIView(frame: .zero)
+    // MARK: - Types
     
-    var color: UIColor? {
+    enum ComponentsType {
+        case rgb, hsb
+    }
+    
+    // MARK: - Properties
+    
+    var componentType: ComponentsType = .rgb {
         didSet {
-            colorIndicator.backgroundColor = color
-            setNeedsLayout()
+            guard isViewLoaded else { return }
+            tableView?.reloadData()
         }
     }
     
-    // MARK: - Init
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initColorIndicator()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func initColorIndicator() {
-        addSubview(colorIndicator)
-    }
-    
-    // MARK:- UIView
-    
-    override func tintColorDidChange() {
-        super.tintColorDidChange()
-        setNeedsDisplay()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        colorIndicator.frame = CGRect(x: bounds.maxX - bounds.size.height, y: 0, width: bounds.size.height, height: bounds.size.height)
-    }
-}
-
-class ColorsTableViewController: UITableViewController {
-    
-    // MARK: - Properties
+    var copyOnSelect = true
     
     private var colorElements: [ColorElement]!
     
     private lazy var namedColorElements: [String : [ColorElement]] = {
         var dict = [String: [ColorElement]]()
         colorElements.forEach { (element) in
-            guard var values = dict[element.name] else {
-                dict[element.name] = [element]
+            guard var values = dict[element.displayName] else {
+                dict[element.displayName] = [element]
                 return
             }
             values.append(element)
-            dict[element.name] = values
+            dict[element.displayName] = values
         }
         return dict
     }()
@@ -97,6 +73,13 @@ class ColorsTableViewController: UITableViewController {
         ]
     }
     
+    // MARK: - Accessing
+    
+    private func colorElement(at indexPath: IndexPath) -> ColorElement {
+        let type = colorElementNames[indexPath.section]
+        return namedColorElements[type]![indexPath.row]
+    }
+    
     // MARK: - UIViewController
     
     override func viewDidLoad() {
@@ -126,8 +109,7 @@ class ColorsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ColorsTableViewCell(style: .subtitle, reuseIdentifier: nil)
-        let type = colorElementNames[indexPath.section]
-        let element = namedColorElements[type]![indexPath.row]
+        let element = colorElement(at: indexPath)
 
         switch element {
         case .label(let name, let color):
@@ -136,7 +118,7 @@ class ColorsTableViewController: UITableViewController {
             let components = ColorComponents.from(color)
             cell.textLabel?.text = name
             cell.textLabel?.textColor = color
-            cell.detailTextLabel?.text = components.rgbDescription
+            cell.detailTextLabel?.text = components.description(for: componentType)
             cell.detailTextLabel?.textColor = UIColor.label
             cell.backgroundColor = UIColor.systemBackground
             cell.color = color
@@ -148,12 +130,39 @@ class ColorsTableViewController: UITableViewController {
             let components = ColorComponents.from(color)
             cell.textLabel?.text = name
             cell.textLabel?.textColor = components.contrastingColor
-            cell.detailTextLabel?.text = components.rgbDescription
+            cell.detailTextLabel?.text = components.description(for: componentType)
             cell.detailTextLabel?.textColor = components.contrastingColor
             cell.backgroundColor = color
             cell.color = color
         }
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard copyOnSelect else { return }
+        let element = colorElement(at: indexPath)
+        let componets = ColorComponents.from(element.color)
+        UIPasteboard.general.string = componets.code(for: componentType)
+    }
 
+}
+
+extension ColorComponents {
+    func description(for aType: ColorsTableViewController.ComponentsType) -> String {
+        switch aType {
+        case .rgb:
+            return rgbDescription
+        case .hsb:
+            return hsbDescription
+        }
+    }
+    
+    func code(for aType: ColorsTableViewController.ComponentsType) -> String {
+        switch aType {
+        case .rgb:
+            return rgbCode
+        case .hsb:
+            return hsbCode
+        }
+    }
 }
